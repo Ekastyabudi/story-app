@@ -8,21 +8,22 @@ if (workbox) {
   console.log("✅ Workbox berhasil dimuat");
 
   // 🔹 Precache Aset Statis
-  workbox.precaching.precacheAndRoute([
-    "/",
-    "/index.html",
-    "/manifest.json",
-    "/src/styles/style.css",
-    "/src/main.js",
-    "/src/router.js",
-    "/src/views/home.js",
-    "/src/views/login.js",
-    "/src/views/register.js",
-    "/src/views/addStory.js",
-    "/src/views/notFound.js",
+workbox.precaching.precacheAndRoute([
+    self.location.origin + "/story-app/",
+    self.location.origin + "/story-app/index.html",
+    self.location.origin + "/story-app/manifest.json",
+    self.location.origin + "/story-app/src/styles/style.css",
+    self.location.origin + "/story-app/src/main.js",
+    self.location.origin + "/story-app/src/router.js",
+    self.location.origin + "/story-app/src/views/home.js",
+    self.location.origin + "/story-app/src/views/login.js",
+    self.location.origin + "/story-app/src/views/register.js",
+    self.location.origin + "/story-app/src/views/addStory.js",
+    self.location.origin + "/story-app/src/views/notFound.js",
     "https://unpkg.com/leaflet@1.7.1/dist/leaflet.css",
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css",
-  ]);
+]);
+
 
   // 🔹 Strategi Cache untuk Aset Statis (HTML, CSS, JS)
   workbox.routing.registerRoute(
