@@ -7,21 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAndStoreStories();
 });
 
-if ("serviceWorker" in navigator && "PushManager" in window) {
-  navigator.serviceWorker
-    .register("./sw.js")
-    .then(async (registration) => {
-      console.log("Service Worker terdaftar:", registration);
-
-      const subscription = await registration.pushManager.getSubscription();
-      if (!subscription) {
-        subscribeToPush(registration);
-      }
-    })
-    .catch((error) =>
-      console.error("Service Worker gagal didaftarkan:", error)
-    );
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+        .then(reg => {
+            console.log("Service Worker berhasil didaftarkan!", reg);
+            return reg;
+        })
+        .then(() => subscribeToPush()) // Panggil subscribe setelah SW siap
+        .catch(err => console.error("Service Worker gagal didaftarkan:", err));
 }
+
 
 async function subscribeToPush() {
     if (!('serviceWorker' in navigator)) {
