@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Berbagi Cerita</title>
+    <link rel="stylesheet" href="src/styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="manifest" href="/manifest.json" />
+
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <a href="#content" class="skip-link">Lewati ke Konten</a>
+
+    <header>
+      <h1>Berbagi Cerita</h1>
+      <nav id="nav-menu">
+        <a href="#/" id="home-link"><i class="fas fa-home"></i> Home</a>
+        <a href="#/add" id="add-link"
+          ><i class="fas fa-plus"></i> Tambah Cerita</a
+        >
+        <a href="#/register" id="register-link"
+          ><i class="fas fa-user-plus"></i> Register</a
+        >
+        <a href="#/login" id="login-link"
+          ><i class="fas fa-sign-in-alt"></i> Login</a
+        >
+      </nav>
+    </header>
+
+    <main id="content">
+      <!-- Konten akan di-load di sini -->
+    </main>
+
+    <footer>
+      <p style="text-align: center">© 2025 Berbagi Cerita</p>
+    </footer>
+
+    <script>
+      let deferredPrompt;
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installButton = document.createElement("button");
+        installButton.innerText = "Pasang Aplikasi";
+        installButton.style.position = "fixed";
+        installButton.style.bottom = "20px";
+        installButton.style.right = "20px";
+        installButton.style.padding = "10px";
+        installButton.style.backgroundColor = "#007bff";
+        installButton.style.color = "#fff";
+        document.body.appendChild(installButton);
+
+        installButton.addEventListener("click", () => {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === "accepted") {
+              console.log("User accepted install prompt");
+            }
+            deferredPrompt = null;
+            installButton.remove();
+          });
+        });
+      });
+    </script>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  </body>
+</html>

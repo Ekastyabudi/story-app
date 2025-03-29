@@ -1,0 +1,190 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+header {
+  background: var(--primary-color);
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: var(--primary-color);
+  padding: 10px 0;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 5px 15px;
+  font-size: 18px;
+}
+
+main {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input,
+textarea,
+button {
+  margin: 10px 0;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  color: white;
+  border: none;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  padding: 12px 15px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.delete-story {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Ukuran tetap agar rapi */
+  height: 40px;
+}
+button:hover {
+  background: #c60f0f;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+#stories-container div {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+.story-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Pastikan elemen berada di kanan */
+  gap: 15px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.story-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.story-info {
+  padding: 10px;
+  flex: 1; /* Isi sisa ruang agar tombol tetap di kanan */
+}
+
+#map {
+  width: 100%;
+  height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary-color);
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  z-index: 100;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 10px;
+}
+
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #f8f9fa;
+  --text-color: #333;
+  --background-color: #ffffff;
+}
+
+/* Mobile-Friendly Adjustments */
+@media (max-width: 768px) {
+  main {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .story-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .story-image {
+    width: 100%;
+    height: 250px;
+  }
+
+  nav {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  nav a {
+    display: block;
+    padding: 10px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition {
+  animation: fadeIn 0.5s ease-in-out;
+}

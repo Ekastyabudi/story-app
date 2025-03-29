@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "start": "npx http-server ./ -p 9000",
+    "dev": "npx http-server ./ -p 3000",
+    "build": "echo 'Tidak ada build yang diperlukan'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1",
+    "leaflet": "^1.9.4"
+  }
+}
