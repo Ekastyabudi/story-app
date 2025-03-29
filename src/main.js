@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 if ("serviceWorker" in navigator && "PushManager" in window) {
   navigator.serviceWorker
-    .register("/sw.js")
+    .register("./sw.js")
     .then(async (registration) => {
       console.log("Service Worker terdaftar:", registration);
 
