@@ -11,9 +11,9 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
         .then(reg => {
             console.log("Service Worker berhasil didaftarkan!", reg);
-            return reg;
+            return reg; // Kembalikan objek registration
         })
-        .then(() => subscribeToPush()) // Panggil subscribe setelah SW siap
+        .then((reg) => subscribeToPush(reg)) // Pastikan reg diteruskan ke subscribeToPush
         .catch(err => console.error("Service Worker gagal didaftarkan:", err));
 }
 
