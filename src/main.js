@@ -23,30 +23,29 @@ if ("serviceWorker" in navigator && "PushManager" in window) {
     );
 }
 
-async function subscribeToPush(registration) {
-  const publicKey =
-    "BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk";
+async function subscribeToPush() {
+    if (!('serviceWorker' in navigator)) {
+        console.error("Service Worker tidak didukung di browser ini.");
+        return;
+    }
 
-  try {
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicKey),
-    });
+    const registration = await navigator.serviceWorker.ready;
+    if (!registration) {
+        console.error("Service Worker belum siap.");
+        return;
+    }
 
-    const token = localStorage.getItem("token");
-    await fetch("https://story-api.dicoding.dev/v1/notifications/subscribe", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(subscription),
-    });
+    try {
+        const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: '<PUBLIC_VAPID_KEY>'
+        });
 
-    console.log("Berhasil subscribe ke push notification");
-  } catch (error) {
-    console.error("Gagal subscribe ke push notification:", error);
-  }
+        console.log("Berhasil subscribe ke Push Notification:", subscription);
+        // Kirim subscription ke server backend kamu
+    } catch (error) {
+        console.error("Gagal subscribe ke push notification:", error);
+    }
 }
 
 function urlBase64ToUint8Array(base64String) {
