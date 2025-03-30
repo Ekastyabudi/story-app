@@ -7,14 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAndStoreStories();
 });
 
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-        .then(reg => {
-            console.log("Service Worker berhasil didaftarkan!", reg);
-            return reg; // Kembalikan objek registration
-        })
-        .then((reg) => subscribeToPush(reg)) // Pastikan reg diteruskan ke subscribeToPush
-        .catch(err => console.error("Service Worker gagal didaftarkan:", err));
+if ("serviceWorker" in navigator && "PushManager" in window) {
+  navigator.serviceWorker
+    .register("./sw.js")
+    .then(async (registration) => {
+      console.log("Service Worker terdaftar:", registration);
+
+      const subscription = await registration.pushManager.getSubscription();
+      if (!subscription) {
+        subscribeToPush(registration);
+      }
+    })
+    .catch((error) =>
+      console.error("Service Worker gagal didaftarkan:", error)
+    );
 }
 
 async function subscribeToPush(registration) {
@@ -27,31 +33,17 @@ async function subscribeToPush(registration) {
       applicationServerKey: urlBase64ToUint8Array(publicKey),
     });
 
-    // Hapus expirationTime jika ada
-    const subscriptionData = subscription.toJSON();
-    delete subscriptionData.expirationTime;
-
     const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("❌ Token tidak ditemukan! Silakan login ulang.");
-      return;
-    }
-
-    const response = await fetch("https://story-api.dicoding.dev/v1/notifications/subscribe", {
+    await fetch("https://story-api.dicoding.dev/v1/notifications/subscribe", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(subscriptionData),
+      body: JSON.stringify(subscription),
     });
 
-    if (!response.ok) {
-      throw new Error(`❌ Gagal subscribe: ${response.status} ${response.statusText}`);
-    }
-
-    const responseData = await response.json();
-    console.log("✅ Berhasil subscribe ke push notification:", responseData);
+    console.log("Berhasil subscribe ke push notification");
   } catch (error) {
     console.error("Gagal subscribe ke push notification:", error);
   }
@@ -60,8 +52,13 @@ async function subscribeToPush(registration) {
 function urlBase64ToUint8Array(base64String) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+
   const rawData = atob(base64);
-  return new Uint8Array([...rawData].map(char => char.charCodeAt(0)));
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
 }
 
 async function fetchAndStoreStories() {
