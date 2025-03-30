@@ -144,7 +144,7 @@ const AddStory = {
           } else {
             alert("Cerita berhasil ditambahkan!");
             sendPushNotification(description); // ✅ Kirim notifikasi
-            window.location.hash = "#/home";
+            window.location.hash = "#/";
           }
         } catch (error) {
           console.error("Error:", error);
