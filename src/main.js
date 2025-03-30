@@ -18,26 +18,22 @@ if ('serviceWorker' in navigator) {
 }
 
 async function subscribeToPush(registration) {
-  if (!registration.pushManager) {
-    console.error("❌ PushManager tidak didukung di browser ini.");
-    return;
-  }
-
   const publicKey =
     "BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk";
 
   try {
-    const applicationServerKey = urlBase64ToUint8Array(publicKey);
-    console.log("applicationServerKey Uint8Array:", applicationServerKey);
-
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey,
+      applicationServerKey: urlBase64ToUint8Array(publicKey),
     });
+
+    // Hapus expirationTime jika ada
+    const subscriptionData = subscription.toJSON();
+    delete subscriptionData.expirationTime;
 
     const token = localStorage.getItem("token");
     if (!token) {
-      console.error("❌ Token tidak ditemukan! Tidak bisa subscribe ke push notification.");
+      console.error("❌ Token tidak ditemukan! Silakan login ulang.");
       return;
     }
 
@@ -47,17 +43,15 @@ async function subscribeToPush(registration) {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(subscription),
+      body: JSON.stringify(subscriptionData),
     });
-
-    const responseData = await response.json();
-    console.log("📨 Response dari server:", responseData);
 
     if (!response.ok) {
       throw new Error(`❌ Gagal subscribe: ${response.status} ${response.statusText}`);
     }
 
-    console.log("✅ Berhasil subscribe ke push notification");
+    const responseData = await response.json();
+    console.log("✅ Berhasil subscribe ke push notification:", responseData);
   } catch (error) {
     console.error("Gagal subscribe ke push notification:", error);
   }
